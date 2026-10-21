@@ -121,3 +121,14 @@ def test_explicit_field_join_without_geometry_inference(sample):
     response=c.post('/api/join',json={'feature':1,'field':'CEG','layer':'sample','target_field':'CEG"),1); DROP TABLE features; --'},headers={'X-EnerAtlas-Token':token})
     assert response.status_code==200 and response.json['items']==[]
     assert c.get('/api/features').json['total']==3
+
+
+def test_portable_raster_survives_without_original_source(tmp_path):
+    from eneratlas.raster import prepare_rasters
+    from PIL import Image
+    target=tmp_path/'rasters';target.mkdir()
+    Image.new('RGBA',(1,1),(10,20,30,255)).save(target/'ipa_total.png')
+    previous=[{'id':'ipa_total','url':'/raster/ipa_total.png','bounds':[[-35,-77],[7,-27]]}]
+    (target/'catalog.json').write_text(json.dumps(previous),encoding='utf-8')
+    assert prepare_rasters([],tmp_path)==previous
+    assert json.loads((target/'catalog.json').read_text())==previous

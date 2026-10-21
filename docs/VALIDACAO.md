@@ -2,6 +2,7 @@
 
 Execute `python -m pytest -q` na raiz. A suíte usa dados sintéticos, não depende dos portais oficiais e verifica comportamentos:
 
+- Preservação da prévia raster portátil sem o arquivo original.
 - CRS projetado para WGS84 e rejeição de CRS ausente.
 - Anéis Esri multipartes, buracos e ilhas.
 - Correção topológica sinalizada e coordenadas fora dos limites rejeitadas.

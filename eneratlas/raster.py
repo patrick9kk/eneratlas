@@ -44,5 +44,11 @@ def prepare_rasters(roots, data_dir):
             break
     except Exception:
         logging.exception('Prévia raster indisponível')
+    if not catalog and (target/'catalog.json').exists():
+        # A portable distribution contains the already-generated preview, not
+        # necessarily the original TIFF. Keep a valid previous preview offline.
+        previous=json.loads((target/'catalog.json').read_text(encoding='utf-8'))
+        if previous and all((target/Path(r['url']).name).is_file() for r in previous):
+            return previous
     (target/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False),encoding='utf-8')
     return catalog

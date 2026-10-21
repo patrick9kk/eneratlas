@@ -16,7 +16,7 @@ Registros sem geometria continuam disponíveis em tabela. Não foram fabricadas 
 
 ## Verificações realizadas
 
-- Oito testes automatizados passaram localmente em Windows/Python 3.14; CI Windows também passou.
+- Nove testes automatizados passaram localmente em Windows/Python 3.14; CI Windows também passou.
 - Navegador Chromium/Edge: mapa, agrupamento de marcadores, 50 registros por página, ficha real com 35 atributos originais e controles de cruzamento.
 - Publicação GitHub Pages: HTTP 200 no endereço público; sem erros JavaScript na abertura, na ficha e no cruzamento por campo.
 - Versão estática: leitura de JSON/GZIP, filtros e ficha sem backend Python.
