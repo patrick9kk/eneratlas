@@ -46,12 +46,13 @@ O aplicativo completo roda localmente em Python empacotado: **não exige instala
 
 ## Usar no Windows
 
-1. Em [Releases](https://github.com/patrick9kk/eneratlas/releases), baixe e extraia `EnerAtlas-Windows-portatil.zip`.
-2. Abra `EnerAtlas.exe`. Mantenha a pasta `data` ao lado dele.
-3. O navegador abre em um endereço `127.0.0.1`, acessível somente no próprio computador.
-4. Marque camadas à esquerda. Abra **Registros** para consultar a tabela e registros sem geometria.
-5. Clique em um componente para abrir a ficha. Em **Cruzar dados**, selecione as camadas de destino e a relação desejada.
-6. Para finalizar o servidor, use o botão **⏻** no cabeçalho. Apenas fechar a aba não encerra o processo.
+1. Em [Releases](https://github.com/patrick9kk/eneratlas/releases), baixe todas as partes `EnerAtlas-Windows-portatil.zip.partNNN` e `Reunir-EnerAtlas.cmd` para a mesma pasta. O pacote completo excede o limite de tamanho por arquivo do GitHub.
+2. Abra `Reunir-EnerAtlas.cmd`: ele reúne as partes e verifica o SHA-256. Depois extraia o ZIP resultante. Se você já recebeu o ZIP completo, basta extraí-lo.
+3. Abra `EnerAtlas.exe`. Mantenha a pasta `data` ao lado dele.
+4. O navegador abre em um endereço `127.0.0.1`, acessível somente no próprio computador.
+5. Marque camadas à esquerda. Abra **Registros** para consultar a tabela e registros sem geometria.
+6. Clique em um componente para abrir a ficha. Em **Cruzar dados**, selecione as camadas de destino e a relação desejada.
+7. Para finalizar o servidor, use o botão **⏻** no cabeçalho. Apenas fechar a aba não encerra o processo.
 
 O ZIP pode incluir um snapshot das bases já concluídas. Sua cobertura exata, data e limitações são registradas em `COBERTURA.json`, dentro do pacote. Novas camadas só entram depois da conclusão e validação do download. As curvas de nível da ANEEL continuam sob coleta no ambiente original; o aplicativo não as apresenta como concluídas enquanto houver apenas arquivos temporários.
 
