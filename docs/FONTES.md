@@ -1,5 +1,7 @@
 # Fontes, proveniência e licenças
 
+**Para obter versões novas:** [guia com os endereços oficiais e o procedimento por base](ONDE_ATUALIZAR_AS_BASES.md).
+
 Inventário inicial em 21/10/2026. As datas de atualização dos registros oficiais variam; a data de indexação do aplicativo não é a data de validade do dado.
 
 | Fonte | Endereço | Uso e atualização |

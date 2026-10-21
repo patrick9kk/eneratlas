@@ -1,5 +1,7 @@
 # Atualização e operação
 
+Para localizar os arquivos e serviços atuais de cada instituição, consulte primeiro [Onde encontrar os dados atualizados de cada base](ONDE_ATUALIZAR_AS_BASES.md).
+
 ## Reabrir bases já baixadas
 
 O EnerAtlas reconhece estas estruturas:
