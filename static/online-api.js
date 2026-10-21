@@ -1,0 +1,33 @@
+/* GitHub Pages adapter. All data is fetched from versioned static snapshots.
+ * Python desktop endpoints remain authoritative for full-resolution analysis.
+ */
+'use strict';
+if(location.hostname.endsWith('github.io')||new URLSearchParams(location.search).has('online')){
+ const originalFetch=window.fetch.bind(window),cache=new Map(),records=new Map();let catalog=[],loaded=false;
+ const root=new URL('.',location.href),absolute=p=>new URL(p.replace(/^\//,''),root).href;
+ const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+ async function read(p){const r=await originalFetch(absolute(p));if(!r.ok)throw Error('Recurso online indisponível: '+p);if(p.endsWith('.gz')){if(!('DecompressionStream'in window))throw Error('Use um navegador atualizado para abrir os dados comprimidos.');return JSON.parse(await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).text())}return r.json()}
+ async function ensure(){if(!loaded){catalog=await read('data/catalog.json');loaded=true}}
+ async function layerData(layer){if(layer.online_unavailable)return[];if(!cache.has(layer.id)){const promise=Promise.all((layer.chunks||[]).map(p=>read(p))).then(parts=>{const data=parts.flat();for(const f of data)records.set(f.id,f);return data});cache.set(layer.id,promise)}return cache.get(layer.id)}
+ async function selected(params){await ensure();const ids=(params.get('layers')||'').split(',').filter(Boolean);const chosen=catalog.filter(l=>!ids.length||ids.includes(l.id));let rows=(await Promise.all(chosen.map(layerData))).flat();const q=norm(params.get('q')),uf=params.get('uf'),status=params.get('status'),source=params.get('source'),located=params.get('located');return rows.filter(r=>(!q||r.search.includes(q))&&(!uf||r.uf.toUpperCase()===uf.toUpperCase())&&(!status||r.status===status)&&(!source||r.source===source)&&(!located||(located==='1')===Boolean(r.geometry)))}
+ const json=(v,status=200)=>new Response(JSON.stringify(v),{status,headers:{'Content-Type':'application/json'}});
+ async function dispatch(path,options){const u=new URL(path,location.origin),p=u.searchParams;await ensure();if(u.pathname==='/api/status')return json({token:'online',version:'1.0.0-online',summary:{camadas:catalog.length,registros:catalog.reduce((n,l)=>n+(l.online_count||0),0),localizados:catalog.reduce((n,l)=>n+(l.online_located||0),0),alertas:0},importer:{running:false,message:'ONLINE · consulta pública · geometrias simplificadas',errors:[]},update:{running:false,message:'A versão online é atualizada quando um novo snapshot é publicado no repositório.'}});
+ if(u.pathname==='/api/layers')return json(catalog);
+ if(u.pathname==='/api/rasters')return json([]);
+ if(u.pathname==='/api/options')return json({uf:[],status:[]});
+ if(u.pathname==='/api/features'){const rows=await selected(p),offset=Number(p.get('offset')||0),limit=50;return json({total:rows.length,items:rows.slice(offset,offset+limit),offset,limit})}
+ if(u.pathname==='/api/map'){let rows=(await selected(p)).filter(r=>r.geometry);const b=p.get('bbox')?.split(',').map(Number);if(b)rows=rows.filter(r=>r.bounds[2]>=b[0]&&r.bounds[0]<=b[2]&&r.bounds[3]>=b[1]&&r.bounds[1]<=b[3]);const limit=1800;return json({type:'FeatureCollection',features:rows.slice(0,limit).map(r=>({type:'Feature',geometry:r.geometry,properties:r})),truncated:rows.length>limit,limit})}
+ if(/^\/api\/features\/\d+$/.test(u.pathname)){const id=Number(u.pathname.split('/').pop());const row=records.get(id);if(!row)return json({error:'Abra a camada correspondente antes de consultar a ficha.'},404);return json(row)}
+ if(/^\/api\/related\/\d+$/.test(u.pathname)){const row=records.get(Number(u.pathname.split('/').pop()));if(!row)return json({items:[],note:'Registro não carregado.'});const keys=['CEG','CNPJ','COD_EQUIPAMENTO'];const pairs=Object.entries(row.attributes).filter(([k,v])=>keys.includes(k.toUpperCase())&&norm(v));const results=[...records.values()].filter(r=>r.id!==row.id&&pairs.some(([k,v])=>norm(r.attributes[k])===norm(v))).map(r=>({...r,basis:'Identificador em camadas carregadas'}));return json({items:results.slice(0,200),truncated:results.length>200,note:'Vínculos nas camadas carregadas. CNPJ relaciona agentes, não comprova o mesmo projeto. Para consulta integral use o executável.'})}
+ if(u.pathname==='/api/join'){const v=JSON.parse(options.body),r=records.get(v.feature),key=norm(r?.attributes[v.field]);if(!key)return json({error:'Campo de origem vazio ou não encontrado'},400);const l=catalog.find(l=>l.id===v.layer);if(!l||l.online_unavailable)return json({error:'Camada disponível no executável'},400);const matches=(await layerData(l)).filter(x=>x.id!==v.feature&&norm(x.attributes[v.target_field])===key);return json({items:matches.slice(0,200).map(x=>({...x,basis:v.field+' = '+v.target_field})),truncated:matches.length>200,note:'Igualdade normalizada dos campos escolhidos. Coincidência não comprova o mesmo projeto.'})}
+ if(u.pathname==='/api/compare')return json({error:'O cruzamento espacial com geometria integral está disponível no executável Windows. A versão web usa geometrias simplificadas para consulta visual.'},400);
+ if(options?.method==='POST')return json({error:'Esta é a consulta pública. Importação, atualização e análise integral funcionam no executável local.'},400);
+ return json({error:'Recurso disponível no executável local'},404)}
+ window.fetch=async(input,options)=>{if(typeof input==='string'&&input.startsWith('/api/'))return dispatch(input,options);return originalFetch(input,options)};
+ window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelector('.workspace-label').textContent='CONSULTA PÚBLICA / BRASIL';
+  const notice=document.createElement('div');notice.className='online-banner';notice.textContent='VERSÃO WEB · geometrias simplificadas para consulta. Análises e acervo integral: baixe o executável no repositório.';document.body.prepend(notice);
+  for(const id of ['open-import','sync','shutdown'])document.getElementById(id).hidden=true;
+  document.getElementById('export-csv').addEventListener('click',async e=>{e.preventDefault();try{const rows=await selected(new URL(e.currentTarget.href).searchParams);const keys=['id','source','layer_name','name','uf','status','attributes'];const csv='\ufeff'+[keys,...rows.map(r=>keys.map(k=>typeof r[k]==='object'?JSON.stringify(r[k]):r[k]))].map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='eneratlas_online.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}catch(error){alert(error.message)}});
+ });
+}
