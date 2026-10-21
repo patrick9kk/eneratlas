@@ -59,7 +59,8 @@ def create_app(db_path, importer, assets, data_dir):
         with connect(db_path) as db:
             summary = dict(db.execute('SELECT sum(count) registros,sum(located) localizados,count(*) camadas,sum(issues) alertas FROM layers').fetchone())
         from . import __version__
-        return jsonify(importer=importer.state, summary=summary, token=token, update=getattr(app, 'update_state', {'running': False}), version=__version__)
+        from .startup import data_identity
+        return jsonify(application='EnerAtlas', data_identity=data_identity(data_dir), importer=importer.state, summary=summary, token=token, update=getattr(app, 'update_state', {'running': False}), version=__version__)
 
     @app.get('/api/layers')
     def layers():
@@ -92,7 +93,7 @@ def create_app(db_path, importer, assets, data_dir):
             bounds = [float(x) for x in args['bbox'].split(',')]
             if len(bounds) != 4 or not all(math.isfinite(x) for x in bounds) or bounds[0] > bounds[2] or bounds[1] > bounds[3]:
                 raise ValueError('Limites do mapa inválidos')
-            clauses.append('f.id IN (SELECT id FROM spatial WHERE maxx>=? AND minx<=? AND maxy>=? AND miny<=?)')
+            clauses.append('EXISTS (SELECT 1 FROM spatial s WHERE s.id=f.id AND s.maxx>=? AND s.minx<=? AND s.maxy>=? AND s.miny<=?)')
             params.extend([bounds[0],bounds[2],bounds[1],bounds[3]])
         return ' AND '.join(clauses), params
 

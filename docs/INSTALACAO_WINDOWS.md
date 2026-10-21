@@ -2,6 +2,10 @@
 
 ## Instalação automática recomendada
 
+Após instalar, abra pelo atalho **EnerAtlas** da área de trabalho ou do menu Iniciar. O programa carrega a base instalada automaticamente e inicia com camadas existentes de geração, transmissão e subestações selecionadas. As outras camadas ficam disponíveis na lista. Não é necessário importar ou selecionar a pasta das bases a cada abertura.
+
+A partir da versão 1.1.4, abrir novamente o atalho reutiliza a sessão da mesma base. O endereço local preferencial é `http://127.0.0.1:8769`; caso a porta esteja ocupada por outro programa, o navegador abre o endereço disponível automaticamente. O executável instalado também lê o caminho dos dados em `INSTALACAO.json` ao ser aberto diretamente, sem argumentos. A opção explícita `--data-dir` continua disponível.
+
 Baixe e abra [Instalar-EnerAtlas.exe](https://github.com/patrick9kk/eneratlas/releases/download/v1.1.2/Instalar-EnerAtlas.exe). Ele inclui seu próprio ambiente de execução; não exige Python ou Git. O instalador consulta a release mais recente para obter o aplicativo, mesmo que seu próprio link esteja na release v1.1.2.
 
 Para baixar todo o código, use [Download ZIP](https://github.com/patrick9kk/eneratlas/archive/refs/heads/main.zip), extraia e abra `Instalar-EnerAtlas.cmd`. Com Git instalado, uma linha no **CMD** faz tudo:

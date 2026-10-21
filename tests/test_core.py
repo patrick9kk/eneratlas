@@ -45,6 +45,18 @@ def test_map_provider_referrer(sample):
     assert 'https://tile.openstreetmap.org' in response.headers['Content-Security-Policy']
 
 
+def test_map_spatial_index_preserves_layer_and_viewport_filters(sample):
+    _, _, client, _ = sample
+    layer = client.get('/api/layers').json[0]['id']
+    inside = client.get('/api/map', query_string={'layers':layer,'bbox':'-36,-9,-34,-7','zoom':'4'})
+    assert inside.status_code == 200
+    assert {f['properties']['name'] for f in inside.json['features']} == {'Usina São José', 'Linha próxima'}
+    outside = client.get('/api/map', query_string={'layers':layer,'bbox':'0,0,1,1'})
+    assert outside.json['features'] == []
+    other = client.get('/api/map', query_string={'layers':'unknown','bbox':'-36,-9,-34,-7'})
+    assert other.json['features'] == []
+
+
 def test_repair_and_bounds():
     g,note=decode_geometry({'type':'Polygon','coordinates':[[[0,0],[2,2],[2,0],[0,2],[0,0]]]})
     assert g.is_valid and note

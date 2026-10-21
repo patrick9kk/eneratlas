@@ -13,13 +13,14 @@ from waitress import create_server
 from eneratlas.catalog import Importer
 from eneratlas.store import initialize
 from eneratlas.server import create_app
+from eneratlas.startup import DEFAULT_PORT, acquire_data_lock, choose_data_dir, find_running
 
 
 def main():
     parser = argparse.ArgumentParser(description='EnerAtlas — mapa local de infraestrutura energética')
     parser.add_argument('--data-dir', type=Path)
     parser.add_argument('--source',type=Path,action='append',default=[])
-    parser.add_argument('--port',type=int,default=0)
+    parser.add_argument('--port',type=int,default=DEFAULT_PORT)
     parser.add_argument('--no-browser',action='store_true')
     parser.add_argument('--import-only',action='store_true')
     parser.add_argument('--no-autodiscover',action='store_true',help='Não buscar bases nas pastas vizinhas')
@@ -27,24 +28,27 @@ def main():
     frozen = getattr(sys,'frozen',False)
     base = Path(sys.executable).parent if frozen else Path(__file__).parent
     assets = Path(sys._MEIPASS) if frozen else base
-    data_dir = (args.data_dir or base/'data').resolve()
+    data_dir = choose_data_dir(args.data_dir, base, frozen)
     data_dir.mkdir(parents=True,exist_ok=True)
+    existing = find_running(data_dir, args.port)
+    if existing:
+        if not args.no_browser and not args.import_only:
+            webbrowser.open(existing)
+        return
     logging.basicConfig(filename=data_dir/'eneratlas.log',level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s',encoding='utf-8')
     # OS-held lock is released even after a crash. Prevent competing indexers.
-    lock = (data_dir/'app.lock').open('a+b')
-    lock.seek(0); lock.write(b'1'); lock.flush(); lock.seek(0)
     try:
-        if os.name == 'nt':
-            import msvcrt
-            msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
-        else:
-            import fcntl
-            fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        lock = acquire_data_lock(data_dir)
     except OSError:
-        state = data_dir/'runtime.json'
-        if state.exists() and not args.no_browser:
-            webbrowser.open(json.loads(state.read_text())['url'])
-        return
+        # A concurrent launch may still be preparing its HTTP server.
+        for _ in range(20):
+            existing = find_running(data_dir, args.port)
+            if existing:
+                if not args.no_browser and not args.import_only:
+                    webbrowser.open(existing)
+                return
+            time.sleep(0.25)
+        raise RuntimeError('A base esta em uso. Aguarde a inicializacao do EnerAtlas e tente novamente.')
     roots = [] if args.no_autodiscover else [base.parent,base,base.parent.parent]
     settings = data_dir/'sources.local.json'
     if settings.exists():
@@ -60,7 +64,13 @@ def main():
         prepare_rasters(roots,data_dir)
         return
     app = create_app(db_path,importer,assets,data_dir)
-    server = create_server(app,host='127.0.0.1',port=args.port,threads=8)
+    try:
+        server = create_server(app,host='127.0.0.1',port=args.port,threads=8)
+    except OSError:
+        # Another application may own the preferred port; remember the new URL.
+        if args.port != DEFAULT_PORT:
+            raise
+        server = create_server(app,host='127.0.0.1',port=0,threads=8)
     url = f'http://127.0.0.1:{server.effective_port}'
     (data_dir/'runtime.json').write_text(json.dumps({'url':url,'pid':os.getpid()}),encoding='utf-8')
     importer.start()

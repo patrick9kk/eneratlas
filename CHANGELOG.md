@@ -1,5 +1,15 @@
 # Histórico
 
+## 1.1.4 — 2026-10-21
+
+- Abertura pelo executável localiza a base indicada no manifesto de instalação, mesmo sem argumentos.
+- Reutiliza a sessão da mesma base, com identidade verificada e porta local estável, evitando abrir catálogos vazios em novas sessões.
+- Corrige a aquisição do bloqueio antes de escrever no arquivo de trava.
+- Inicia com camadas existentes de geração, transmissão e subestações selecionadas; seleção vazia de outra sessão não deixa a próxima abertura sem componentes.
+- Consulta espacial usa o índice por registro, evitando percorrer milhões de registros de outras camadas para abrir o mapa.
+- Evita repetir a consulta inicial do mapa enquanto a primeira resposta ainda está carregando.
+
+
 ## 1.1.3 — 2026-10-21
 
 - Corrige o envio da origem da página ao OpenStreetMap, exigido para carregar o mapa de ruas, no aplicativo e na versão pública.
