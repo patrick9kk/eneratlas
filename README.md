@@ -8,6 +8,8 @@ Não precisa instalar nada para consultar a versão pública. Abra o link, marqu
 
 ### [⬇️ Baixar o aplicativo Windows](https://github.com/patrick9kk/eneratlas/releases/latest)
 
+Já possui o pacote? A [versão mais recente](https://github.com/patrick9kk/eneratlas/releases/latest) permite atualizar apenas o executável, preservando as bases.
+
 O aplicativo completo roda localmente em Python empacotado: **não exige instalar Python**. Tem cruzamento espacial, importação de novos dados e atualização pelas fontes oficiais. A interface abre no navegador padrão; o processamento acontece no seu computador.
 
 ![Mapa EnerAtlas](docs/mapa.png)
@@ -15,6 +17,8 @@ O aplicativo completo roda localmente em Python empacotado: **não exige instala
 ## O que você pode fazer
 
 - Sobrepor geração, transmissão, subestações e contexto territorial.
+- Diferenciar linhas por tensão nominal em kV, com cores estáveis, legenda e nome/tensão ao passar o mouse.
+- Alternar entre mapa de ruas, imagem de satélite Esri e fundo desligado.
 - Consultar a ficha de cada registro, com atributos originais, nomes dos campos, aliases, unidades declaradas pela fonte, códigos de domínio, origem e data de indexação.
 - Filtrar por fonte, texto, UF, situação e disponibilidade de geometria.
 - Consultar os registros sem coordenadas na tabela; o aplicativo não inventa localização.
@@ -46,9 +50,9 @@ O aplicativo completo roda localmente em Python empacotado: **não exige instala
 
 ## Usar no Windows
 
-1. Em [Releases](https://github.com/patrick9kk/eneratlas/releases), baixe todas as partes `EnerAtlas-Windows-portatil.zip.partNNN` e `Reunir-EnerAtlas.cmd` para a mesma pasta. O pacote completo excede o limite de tamanho por arquivo do GitHub.
+1. No [pacote completo v1.0.0](https://github.com/patrick9kk/eneratlas/releases/tag/v1.0.0), baixe todas as partes `EnerAtlas-Windows-portatil.zip.partNNN` e `Reunir-EnerAtlas.cmd` para a mesma pasta. O pacote completo excede o limite de tamanho por arquivo do GitHub.
 2. Abra `Reunir-EnerAtlas.cmd`: ele reúne as partes e verifica o SHA-256. Depois extraia o ZIP resultante. Se você já recebeu o ZIP completo, basta extraí-lo.
-3. Abra `EnerAtlas.exe`. Mantenha a pasta `data` ao lado dele.
+3. Para usar os recursos mais recentes, baixe o executável da [última versão](https://github.com/patrick9kk/eneratlas/releases/latest) e substitua o `EnerAtlas.exe` da pasta extraída, mantendo `data`. Depois abra o executável. As atualizações 1.1.x são compatíveis com o banco 1.0.0.
 4. O navegador abre em um endereço `127.0.0.1`, acessível somente no próprio computador.
 5. Marque camadas à esquerda. Abra **Registros** para consultar a tabela e registros sem geometria.
 6. Clique em um componente para abrir a ficha. Em **Cruzar dados**, selecione as camadas de destino e a relação desejada.

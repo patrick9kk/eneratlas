@@ -39,7 +39,7 @@ def create_app(db_path, importer, assets, data_dir):
     def headers(response):
         response.headers['X-Content-Type-Options'] = 'nosniff'
         response.headers['Referrer-Policy'] = 'no-referrer'
-        response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'"
+        response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://server.arcgisonline.com; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'"
         if request.path.startswith('/api/'):
             response.headers['Cache-Control'] = 'no-store'
         return response
@@ -57,7 +57,8 @@ def create_app(db_path, importer, assets, data_dir):
     def status():
         with connect(db_path) as db:
             summary = dict(db.execute('SELECT sum(count) registros,sum(located) localizados,count(*) camadas,sum(issues) alertas FROM layers').fetchone())
-        return jsonify(importer=importer.state, summary=summary, token=token, update=getattr(app, 'update_state', {'running': False}), version='1.0.0')
+        from . import __version__
+        return jsonify(importer=importer.state, summary=summary, token=token, update=getattr(app, 'update_state', {'running': False}), version=__version__)
 
     @app.get('/api/layers')
     def layers():
@@ -139,7 +140,9 @@ def create_app(db_path, importer, assets, data_dir):
                 truncated = len(rows)>limit
             for row in rows[:limit]:
                 geom = from_wkb(row['geom']).simplify(tolerance, preserve_topology=True)
-                result.append({'type': 'Feature', 'geometry': mapping(geom), 'properties': brief(row) | {'style': json.loads(row['style'])}})
+                attrs=json.loads(row['attrs'])
+                voltage_fields={k:v for k,v in attrs.items() if normalized(k) in ('tensao','tensaokv','valniveltensaokv','tensaonominal','tensaonominalkv','voltage','voltagekv')}
+                result.append({'type': 'Feature', 'geometry': mapping(geom), 'properties': brief(row) | {'style': json.loads(row['style']), 'voltage_fields': voltage_fields}})
         return jsonify(type='FeatureCollection', features=result, truncated=truncated, limit=limit)
 
     @app.get('/api/features/<int:fid>')

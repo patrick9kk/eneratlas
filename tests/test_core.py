@@ -132,3 +132,13 @@ def test_portable_raster_survives_without_original_source(tmp_path):
     (target/'catalog.json').write_text(json.dumps(previous),encoding='utf-8')
     assert prepare_rasters([],tmp_path)==previous
     assert json.loads((target/'catalog.json').read_text())==previous
+
+
+def test_map_includes_declared_voltage_and_allows_imagery(sample):
+    db,_,client,_=sample
+    with connect(db) as c:
+        c.execute('UPDATE features SET attrs=? WHERE id=2', (json.dumps({'TENSAO_KV':230,'POTENCIA_MW':500}),))
+    result=client.get('/api/map').json
+    line=next(f for f in result['features'] if f['properties']['id']==2)
+    assert line['properties']['voltage_fields']=={'TENSAO_KV':230}
+    assert 'https://server.arcgisonline.com' in client.get('/').headers['Content-Security-Policy']

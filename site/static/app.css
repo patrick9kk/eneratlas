@@ -2,3 +2,5 @@
 :root .online-banner{height:32px;background:#e4eccf;color:#3f5839;text-align:center;font:10px/32px 'Segoe UI',sans-serif;letter-spacing:.3px;overflow:hidden}.online-banner~.workspace{height:calc(100vh - 110px)}
 
 .cluster-icon{background:#ffffffd9;border:1px solid #a7baa0;border-radius:50%;box-shadow:0 2px 8px #28583422;display:grid;place-items:center}.cluster-icon span{background:#dde8c7;color:#365741;border-radius:50%;width:29px;height:29px;display:grid;place-items:center;font-size:11px;font-weight:700}.leaflet-marker-pane .marker-cluster{background:none}
+
+.map-actions select{font-size:10px;padding:8px;background:#fffffff2;box-shadow:0 2px 10px #1c3d2b08;width:auto;max-width:160px;cursor:pointer}.legend-line{display:inline-block;width:20px;border-top:3px solid}.component-tooltip{font-size:11px;border:1px solid #d0dcc6;border-radius:6px;padding:8px 11px;box-shadow:0 3px 12px #0002;color:#253c35}.component-tooltip strong{font-weight:650}#legend{max-height:160px;overflow:auto}
