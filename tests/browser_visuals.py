@@ -21,7 +21,7 @@ def main():
         assert page.evaluate("EnerTransmission.color(EnerTransmission.parse('500.0'))===EnerTransmission.color('500')")
         assert page.evaluate("EnerTransmission.color('230')!==EnerTransmission.color('500')")
         page.evaluate("active=new Set(layers.filter(l=>l.source==='EPE'&&l.name.includes('Transmissão')).map(l=>l.id));renderLayers();refresh()")
-        page.wait_for_function('() => visibleVoltages.length>=3')
+        page.wait_for_function('() => visibleVoltages.length>=3 && clusters.getLayers().length===0')
         page.wait_for_timeout(250)
         styles=page.evaluate("visibleVoltages.map(v=>({key:v.key,color:v.color}))")
         assert len({v['color'] for v in styles})==len(styles)
@@ -39,6 +39,8 @@ def main():
         assert 'kV' in tooltip and len(tooltip.splitlines()[0])>3
         page.locator('#basemap-select').select_option('satellite')
         page.wait_for_function("() => [...document.querySelectorAll('img.leaflet-tile')].some(i=>i.src.includes('World_Imagery')&&i.complete&&i.naturalWidth>0)",timeout=30000)
+        page.wait_for_function('() => !satellite.isLoading()',timeout=30000)
+        page.wait_for_timeout(500)
         assert page.evaluate('map.hasLayer(satellite)&&!map.hasLayer(tiles)')
         if args.screenshot:
             args.screenshot.parent.mkdir(parents=True,exist_ok=True)
