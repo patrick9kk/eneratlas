@@ -119,6 +119,7 @@ Distâncias locais usam projeção azimutal equidistante centrada no projeto. Á
 - [Fontes e licenças](docs/FONTES.md)
 - [Arquitetura e modelo de dados](docs/ARQUITETURA.md)
 - [Atualização, extensões e operação](docs/ATUALIZACAO.md)
+- [Instalação no Windows com atalhos](docs/INSTALACAO_WINDOWS.md)
 - [Validação e testes](docs/VALIDACAO.md)
 - [Cobertura e evidências da entrega](docs/ENTREGA.md)
 - [Histórico de mudanças](CHANGELOG.md)
