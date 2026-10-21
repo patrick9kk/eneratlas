@@ -1,5 +1,11 @@
 # Histórico
 
+## 1.1.3 — 2026-10-21
+
+- Corrige o envio da origem da página ao OpenStreetMap, exigido para carregar o mapa de ruas, no aplicativo e na versão pública.
+- Atualiza a identificação dos arquivos da interface para evitar reutilização de versões antigas pelo navegador.
+
+
 ## 1.1.2 — 2026-10-21
 
 - Contatos públicos de Patrick Maximo Cordeiro na interface: GitHub, LinkedIn e e-mail.

@@ -37,6 +37,14 @@ def test_crs_holes_and_disjoint_rings():
         decode_geometry({'x':1,'y':2},True)
 
 
+def test_map_provider_referrer(sample):
+    _, _, client, _ = sample
+    response = client.get('/')
+    assert response.headers['Referrer-Policy'] == 'strict-origin-when-cross-origin'
+    assert b'name="referrer" content="strict-origin-when-cross-origin"' in response.data
+    assert 'https://tile.openstreetmap.org' in response.headers['Content-Security-Policy']
+
+
 def test_repair_and_bounds():
     g,note=decode_geometry({'type':'Polygon','coordinates':[[[0,0],[2,2],[2,0],[0,2],[0,0]]]})
     assert g.is_valid and note

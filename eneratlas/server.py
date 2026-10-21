@@ -38,7 +38,8 @@ def create_app(db_path, importer, assets, data_dir):
     @app.after_request
     def headers(response):
         response.headers['X-Content-Type-Options'] = 'nosniff'
-        response.headers['Referrer-Policy'] = 'no-referrer'
+        # Tile providers require the real page origin; never expose paths/queries.
+        response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://server.arcgisonline.com; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'"
         if request.path.startswith('/api/'):
             response.headers['Cache-Control'] = 'no-store'

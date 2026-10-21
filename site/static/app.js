@@ -23,7 +23,7 @@ let overrides;try{overrides=JSON.parse(localStorage.getItem('eneratlas.styles')|
 const styleFor=layer=>({...layer.style,...overrides[layer.id]});
 const map=L.map('map',{zoomControl:false,preferCanvas:true,minZoom:3,maxZoom:18}).setView([-14.4,-52.8],4);
 L.control.zoom({position:'topleft'}).addTo(map);L.control.scale({imperial:false,position:'bottomright'}).addTo(map);
-const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a>'});
+const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,referrerPolicy:'strict-origin-when-cross-origin',attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a>'});
 const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagens © Esri, Vantor, Earthstar Geographics e GIS User Community · <a href="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noreferrer">Créditos</a>'});
 function applyBasemap(value){if(!['streets','satellite','none'].includes(value))value='streets';for(const background of [tiles,satellite])if(map.hasLayer(background))map.removeLayer(background);if(value==='streets')tiles.addTo(map);if(value==='satellite')satellite.addTo(map);$('basemap-select').value=value;try{localStorage.setItem('eneratlas.basemap',value)}catch{}}
 let savedBasemap='streets';try{savedBasemap=localStorage.getItem('eneratlas.basemap')||'streets'}catch{}applyBasemap(savedBasemap);
