@@ -12,7 +12,41 @@ Desenvolvido por **Patrick Maximo Cordeiro**.
 
 Não precisa instalar nada para consultar a versão pública. Abra o link, marque as camadas e clique nos componentes para visualizar a ficha técnica.
 
-### [⬇️ Baixar o aplicativo Windows](https://github.com/patrick9kk/eneratlas/releases/latest)
+### [⬇️ Instalar com um único executável](https://github.com/patrick9kk/eneratlas/releases/download/v1.1.2/Instalar-EnerAtlas.exe)
+
+Baixe **Instalar-EnerAtlas.exe** e abra-o. Ele baixa o aplicativo com as dependências incluídas, reúne e verifica o acervo inicial, instala por usuário, cria atalhos e abre o mapa. **Não precisa instalar Python, Git ou usar conta de administrador.** A instalação requer internet e Windows x64.
+
+### Baixar o repositório inteiro e instalar com dois cliques
+
+1. [Baixe o repositório completo em ZIP](https://github.com/patrick9kk/eneratlas/archive/refs/heads/main.zip) — ou use **Code → Download ZIP** no GitHub.
+2. Extraia o ZIP para uma pasta no computador.
+3. Abra **Instalar-EnerAtlas.cmd** dentro da pasta extraída e aguarde. Ele faz a mesma instalação automática do executável acima.
+
+O ZIP do repositório contém o código, a documentação e a versão web. O acervo completo, de vários GB, é baixado separadamente pelo instalador a partir das releases.
+
+**Uma única linha no Prompt de Comando (CMD), caso já tenha Git instalado:**
+
+```bat
+git clone https://github.com/patrick9kk/eneratlas.git && cd eneratlas && Instalar-EnerAtlas.cmd
+```
+
+**No PowerShell:**
+
+```powershell
+git clone https://github.com/patrick9kk/eneratlas.git; if ($LASTEXITCODE -eq 0) { & .\eneratlas\Instalar-EnerAtlas.cmd }
+```
+
+Se já baixou e extraiu o repositório, basta executar `.\Instalar-EnerAtlas.cmd` dentro da pasta.
+
+**Primeira instalação completa:** o acervo publicado em v1.0.0 tem aproximadamente **3,57 GB para baixar**, com 144 camadas e 1.324.499 registros. Reserve **20 GB livres** para reunir, extrair e manter os arquivos de instalação. Esse pacote é um retrato histórico; para obter dados atuais, siga [as fontes e os procedimentos de atualização](docs/ONDE_ATUALIZAR_AS_BASES.md). Uma base já instalada é preservada e reutilizada, sem baixar o acervo antigo sobre ela.
+
+Para instalar apenas o programa e depois importar suas próprias bases:
+
+```powershell
+.\Instalar-EnerAtlas.cmd -AppOnly
+```
+
+Veja [caminhos, opções, verificação e instalação manual](docs/INSTALACAO_WINDOWS.md).
 
 Já possui o pacote? A [versão mais recente](https://github.com/patrick9kk/eneratlas/releases/latest) permite atualizar apenas o executável, preservando as bases.
 
@@ -54,7 +88,7 @@ O aplicativo completo roda localmente em Python empacotado: **não exige instala
 
 **A versão online não é uma amostra aleatória.** Publica todas as linhas de cada camada admitida, com limites de 12 mil registros e 32 MB de geometria integral por camada. Camadas maiores, raster e downloads pendentes aparecem no catálogo como disponíveis no aplicativo completo. O resumo exato da publicação fica em [`site/snapshot.json`](site/snapshot.json). Geometrias da web têm tolerância de simplificação de 0,002 grau e não servem para inferir interseção, distâncias ou limites de engenharia.
 
-## Usar no Windows
+## Alternativa: pacote portátil manual
 
 1. No [pacote completo v1.0.0](https://github.com/patrick9kk/eneratlas/releases/tag/v1.0.0), baixe todas as partes `EnerAtlas-Windows-portatil.zip.partNNN` e `Reunir-EnerAtlas.cmd` para a mesma pasta. O pacote completo excede o limite de tamanho por arquivo do GitHub.
 2. Abra `Reunir-EnerAtlas.cmd`: ele reúne as partes e verifica o SHA-256. Depois extraia o ZIP resultante. Se você já recebeu o ZIP completo, basta extraí-lo.
