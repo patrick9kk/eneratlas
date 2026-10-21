@@ -1,0 +1,10 @@
+{
+  "generated_utc": "2026-10-21T04:40:05.312118+00:00",
+  "layers": 146,
+  "online_layers": 108,
+  "online_records": 69076,
+  "simplification_degrees": 0.002,
+  "max_layer_rows": 12000,
+  "max_layer_geometry_bytes": 33554432,
+  "note": "Todas as linhas das camadas admitidas. Camadas maiores, raster e downloads pendentes identificados no catálogo; acervo completo no executável. Código MIT; dados continuam sujeitos às licenças das fontes."
+}

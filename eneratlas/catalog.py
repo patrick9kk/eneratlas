@@ -182,9 +182,10 @@ class Importer:
         path = Path(item['file'])
         signature = str(path.resolve()) + ':' + str(path.stat().st_size) + ':' + str(path.stat().st_mtime_ns)
         signature += ':' + stable_id(json.dumps(item.get('meta', {}), sort_keys=True))
+        signature_hash = hashlib.sha256(signature.encode()).hexdigest()
         with connect(self.db_path) as db:
             prev = db.execute('SELECT signature FROM layers WHERE id=?', (item['id'],)).fetchone()
-            if prev and prev[0] == signature:
+            if prev and prev[0] in (signature, signature_hash):
                 return
             self.publish(message='Indexando ' + item['name'], layer=item['name'], rows=0)
             # Transaction per layer: readers see the previous complete snapshot
@@ -226,4 +227,4 @@ class Importer:
                     self.publish(rows=count)
             if item.get('expected') is not None and count != item['expected']:
                 raise ValueError(f'Contagem diverge do inventário: {count} / {item["expected"]}; versão anterior preservada')
-            db.execute('UPDATE layers SET signature=?,state=?,count=?,located=?,issues=?,updated=?,file=?,error=NULL WHERE id=?', (signature,'indexado',count,located,issues,datetime.now(timezone.utc).isoformat(),str(path),item['id']))
+            db.execute('UPDATE layers SET signature=?,state=?,count=?,located=?,issues=?,updated=?,file=?,error=NULL WHERE id=?', (signature_hash,'indexado',count,located,issues,datetime.now(timezone.utc).isoformat(),path.name,item['id']))

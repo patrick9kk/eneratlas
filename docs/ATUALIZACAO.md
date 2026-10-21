@@ -43,7 +43,7 @@ Informe nome, URL e descrição da origem, licença e data. A URL é referência
 3. Confira `site/snapshot.json` e o catálogo. Teste o site servido por HTTP, não `file://`.
 4. Faça commit e push. O workflow Pages publica `site/` automaticamente, sem executar Python no navegador.
 
-O exportador publica todas as linhas de camadas com até 12 mil registros, simplifica a geometria de tela e grava blocos comprimidos de mil registros. Limites estão no próprio manifesto. Camadas maiores continuam listadas com indicação de uso no aplicativo completo. Metadados e dados publicados devem ter origem documentada; nunca inclua dados próprios confidenciais em um snapshot público.
+O exportador publica todas as linhas de camadas com até 12 mil registros e 32 MB de geometria integral, simplifica a geometria de tela e grava blocos comprimidos de mil registros. Limites estão no próprio manifesto. Camadas maiores continuam listadas com indicação de uso no aplicativo completo. Metadados e dados publicados devem ter origem documentada; nunca inclua dados próprios confidenciais em um snapshot público.
 
 ## Build Windows e backup
 

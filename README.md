@@ -37,11 +37,12 @@ O aplicativo completo roda localmente em Python empacotado: **não exige instala
 | Geometria | Simplificada para consulta visual | Integral, reprojetada para WGS84 |
 | Camadas grandes / curvas de nível | Catálogo informa disponibilidade no aplicativo | Importadas ao concluir o download |
 | Vínculos por identificador | Nas camadas carregadas no navegador | No índice local completo |
+| Cruzamento por campos | Sim, por igualdade normalizada | Sim |
 | Cruzamento espacial | No aplicativo local | Sim, com geometria integral |
 | Importar, baixar e atualizar fontes | Novo snapshot publicado pelo mantenedor | Sim |
 | Sem internet | Não no primeiro acesso | Sim, com fundo cartográfico desligado |
 
-**A versão online não é uma amostra aleatória.** Publica todas as linhas de cada camada admitida, com limite de 12 mil registros por camada. Camadas maiores, raster e downloads pendentes aparecem no catálogo como disponíveis no aplicativo completo. O resumo exato da publicação fica em [`site/snapshot.json`](site/snapshot.json). Geometrias da web têm tolerância de simplificação de 0,002 grau e não servem para inferir interseção, distâncias ou limites de engenharia.
+**A versão online não é uma amostra aleatória.** Publica todas as linhas de cada camada admitida, com limites de 12 mil registros e 32 MB de geometria integral por camada. Camadas maiores, raster e downloads pendentes aparecem no catálogo como disponíveis no aplicativo completo. O resumo exato da publicação fica em [`site/snapshot.json`](site/snapshot.json). Geometrias da web têm tolerância de simplificação de 0,002 grau e não servem para inferir interseção, distâncias ou limites de engenharia.
 
 ## Usar no Windows
 

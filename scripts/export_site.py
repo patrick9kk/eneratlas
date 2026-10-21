@@ -22,21 +22,28 @@ def export(db_path, output):
     (output/'.nojekyll').touch()
     (output/'data').mkdir(exist_ok=True)
     catalog=[]
+    previous_file=output/'data/catalog.json'
+    previous={l['id']:l for l in json.loads(previous_file.read_text(encoding='utf-8'))} if previous_file.exists() else {}
     with connect(db_path) as db:
         for row in db.execute('SELECT * FROM layers ORDER BY source,name'):
             layer=layer_dict(row)
             # Large terrain/administrative geometry is available in the desktop
             # archive. Publish ALL rows of admitted layers, never a silent sample.
-            admitted=row['state']=='indexado' and row['count']<=12000 and 'Raster' not in layer['metadata'].get('type','')
+            geometry_bytes=db.execute('SELECT coalesce(sum(length(geom)),0) FROM features WHERE layer_id=?',(row['id'],)).fetchone()[0]
+            admitted=row['state']=='indexado' and row['count']<=12000 and geometry_bytes<=32*1024**2 and 'Raster' not in layer['metadata'].get('type','')
             layer.update(online_unavailable=not admitted,chunks=[],online_count=0,online_located=0)
             if not admitted:
                 layer['state']='desktop_only'
+                catalog.append(layer);continue
+            old=previous.get(row['id'],{})
+            if old.get('updated')==row['updated'] and old.get('online_count')==row['count'] and all((output/p).exists() for p in old.get('chunks',[])):
+                layer.update(chunks=old['chunks'],online_count=old['online_count'],online_located=old['online_located'])
                 catalog.append(layer);continue
             chunk=[]
             def flush():
                 if not chunk:return
                 name=f'data/{row["id"]}_{len(layer["chunks"]):03}.json.gz'
-                with gzip.open(output/name,'wt',encoding='utf-8',compresslevel=9) as stream:
+                with gzip.open(output/name,'wt',encoding='utf-8',compresslevel=6) as stream:
                     json.dump(chunk,stream,ensure_ascii=False,separators=(',',':'))
                 layer['chunks'].append(name);chunk.clear()
             meta=layer['metadata']
@@ -52,7 +59,7 @@ def export(db_path, output):
                 if len(chunk)>=1000:flush()
             flush();catalog.append(layer)
     (output/'data/catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
-    manifest={'generated_utc':datetime.now(timezone.utc).isoformat(),'layers':len(catalog),'online_layers':sum(not l['online_unavailable'] for l in catalog),'online_records':sum(l['online_count'] for l in catalog),'simplification_degrees':.002,'max_layer_rows':12000,'note':'Todas as linhas das camadas admitidas. Camadas maiores, raster e downloads pendentes identificados no catálogo; acervo completo no executável. Código MIT; dados continuam sujeitos às licenças das fontes.'}
+    manifest={'generated_utc':datetime.now(timezone.utc).isoformat(),'layers':len(catalog),'online_layers':sum(not l['online_unavailable'] for l in catalog),'online_records':sum(l['online_count'] for l in catalog),'simplification_degrees':.002,'max_layer_rows':12000,'max_layer_geometry_bytes':32*1024**2,'note':'Todas as linhas das camadas admitidas. Camadas maiores, raster e downloads pendentes identificados no catálogo; acervo completo no executável. Código MIT; dados continuam sujeitos às licenças das fontes.'}
     (output/'snapshot.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(manifest,ensure_ascii=False))
 

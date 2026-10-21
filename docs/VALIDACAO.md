@@ -11,6 +11,7 @@ Execute `python -m pytest -q` na raiz. A suíte usa dados sintéticos, não depe
 - Cruzamento espacial com distância conhecida e validação de raio.
 - Rejeição de Host/Origin externo e mutação sem token.
 - CSV próprio com coordenadas explícitas e proveniência.
+- Cruzamento explícito por campo sem atribuir geometria e com proteção contra injeção no caminho JSON.
 
 O workflow de CI executa os testes em Windows/Python 3.14. Publicação no Pages ocorre em um workflow separado, com permissões limitadas à implantação do site.
 
