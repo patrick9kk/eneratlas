@@ -16,7 +16,8 @@ def main():
 2. Extraia este ZIP e copie EnerAtlas.exe para a pasta do aplicativo anterior.
 3. Substitua somente o executavel. Preserve a pasta data e abra EnerAtlas.exe.
 
-Novidades: cores das linhas por tensao em kV, nome e tensao ao passar o mouse,
+Autoria na interface: Patrick Maximo Cordeiro.
+Recursos: cores das linhas por tensao em kV, nome e tensao ao passar o mouse,
 e seletor de mapa de ruas, imagem de satelite ou fundo desligado.
 Satelite requer internet. Os registros e geometrias locais sao preservados.
 

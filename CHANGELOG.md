@@ -1,5 +1,10 @@
 # Histórico
 
+## 1.1.1 — 2026-10-21
+
+- Crédito “Desenvolvido por Patrick Maximo Cordeiro” visível na interface pública e local.
+- Apresentação do projeto para LinkedIn, com fontes, recursos e links documentados.
+
 ## 1.1.0 — 2026-10-21
 
 - Linhas de transmissão coloridas pela tensão nominal em kV, com cores consistentes entre camadas EPE/ANEEL, legenda por tensão visível e classe cinza tracejada para valores ausentes.

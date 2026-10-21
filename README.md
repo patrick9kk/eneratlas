@@ -2,6 +2,8 @@
 
 **Mapa interativo da infraestrutura energética brasileira, com dados da EPE, ANEEL e ONS.**
 
+Desenvolvido por **Patrick Maximo Cordeiro**.
+
 ### [🗺️ Abrir o mapa no navegador](https://patrick9kk.github.io/eneratlas/)
 
 Não precisa instalar nada para consultar a versão pública. Abra o link, marque as camadas e clique nos componentes para visualizar a ficha técnica.
