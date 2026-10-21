@@ -1,5 +1,10 @@
 # Histórico
 
+## 1.1.2 — 2026-10-21
+
+- Contatos públicos de Patrick Maximo Cordeiro na interface: GitHub, LinkedIn e e-mail.
+- Links de contato no README e página dedicada em `docs/CONTATO.md`.
+
 ## 1.1.1 — 2026-10-21
 
 - Crédito “Desenvolvido por Patrick Maximo Cordeiro” visível na interface pública e local.

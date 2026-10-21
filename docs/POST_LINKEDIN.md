@@ -21,4 +21,8 @@ Feedbacks e sugestões de quem trabalha com energia e geoprocessamento são bem-
 
 Patrick Maximo Cordeiro
 
+Contato: patrickmaximocordeiro9@gmail.com
+LinkedIn: https://www.linkedin.com/in/patrick-maximo-serafim-750729177/
+GitHub: https://github.com/patrick9kk
+
 #Energia #SetorEletrico #Geoprocessamento #Python #DadosAbertos

@@ -4,6 +4,8 @@
 
 Desenvolvido por **Patrick Maximo Cordeiro**.
 
+[GitHub](https://github.com/patrick9kk) · [LinkedIn](https://www.linkedin.com/in/patrick-maximo-serafim-750729177/) · [patrickmaximocordeiro9@gmail.com](mailto:patrickmaximocordeiro9@gmail.com)
+
 **Quer atualizar as bases?** Veja [onde encontrar os dados atuais da EPE, ANEEL e ONS](docs/ONDE_ATUALIZAR_AS_BASES.md), com links oficiais e instruções de atualização.
 
 ### [🗺️ Abrir o mapa no navegador](https://patrick9kk.github.io/eneratlas/)
