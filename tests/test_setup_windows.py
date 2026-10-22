@@ -103,3 +103,22 @@ if (-not $rejected) { throw 'Corrupt download accepted' }
 """)
     assert result.returncode == 0, result.stdout + result.stderr
     assert target.read_bytes() == b'previous installation'
+
+
+def test_update_keeps_configured_data_location(tmp_path):
+    program = tmp_path / 'program'
+    program.mkdir()
+    data = tmp_path / 'documents/data'
+    data.mkdir(parents=True)
+    with sqlite3.connect(data / 'eneratlas.db') as connection:
+        connection.execute('CREATE TABLE preserved(value TEXT)')
+    (program / 'INSTALACAO.json').write_text(json.dumps({'data':str(data)}))
+    result = ps(tmp_path, """
+function Get-ReleaseMetadata($Tag) { return [pscustomobject]@{tag_name='test';assets=@([pscustomobject]@{name='EnerAtlas.exe'})} }
+$InstallRoot=Join-Path $PWD 'program'; $DataRoot=''; $CacheRoot=Join-Path $PWD 'cache'
+$CheckOnly=$true
+$plan=Install-EnerAtlas
+if ($plan.data -ne (Join-Path $PWD 'documents/data')) { throw 'Configured database path was ignored' }
+if (-not $plan.existing_data -or $plan.download_full_data) { throw 'Existing database was not preserved' }
+""")
+    assert result.returncode == 0, result.stdout + result.stderr

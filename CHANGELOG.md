@@ -1,5 +1,12 @@
 # Histórico
 
+## Instalador — 2026-10-22
+
+- Preserva o caminho da base registrado no manifesto ao atualizar, em vez de voltar ao destino padrão.
+- Permite vincular uma base em outra pasta com `-UseExistingLocation`, sem mover ou substituir arquivos.
+- Download recomendado aponta para o instalador da release mais recente.
+
+
 ## 1.1.4 — 2026-10-21
 
 - Abertura pelo executável localiza a base indicada no manifesto de instalação, mesmo sem argumentos.

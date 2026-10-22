@@ -12,7 +12,7 @@ Desenvolvido por **Patrick Maximo Cordeiro**.
 
 Não precisa instalar nada para consultar a versão pública. Abra o link, marque as camadas e clique nos componentes para visualizar a ficha técnica.
 
-### [⬇️ Instalar com um único executável](https://github.com/patrick9kk/eneratlas/releases/download/v1.1.2/Instalar-EnerAtlas.exe)
+### [⬇️ Instalar com um único executável](https://github.com/patrick9kk/eneratlas/releases/latest/download/Instalar-EnerAtlas.exe)
 
 Baixe **Instalar-EnerAtlas.exe** e abra-o. Ele baixa o aplicativo com as dependências incluídas, reúne e verifica o acervo inicial, instala por usuário, cria atalhos e abre o mapa. **Não precisa instalar Python, Git ou usar conta de administrador.** A instalação requer internet e Windows x64.
 

@@ -6,7 +6,7 @@ Após instalar, abra pelo atalho **EnerAtlas** da área de trabalho ou do menu I
 
 A partir da versão 1.1.4, abrir novamente o atalho reutiliza a sessão da mesma base. O endereço local preferencial é `http://127.0.0.1:8769`; caso a porta esteja ocupada por outro programa, o navegador abre o endereço disponível automaticamente. O executável instalado também lê o caminho dos dados em `INSTALACAO.json` ao ser aberto diretamente, sem argumentos. A opção explícita `--data-dir` continua disponível.
 
-Baixe e abra [Instalar-EnerAtlas.exe](https://github.com/patrick9kk/eneratlas/releases/download/v1.1.2/Instalar-EnerAtlas.exe). Ele inclui seu próprio ambiente de execução; não exige Python ou Git. O instalador consulta a release mais recente para obter o aplicativo, mesmo que seu próprio link esteja na release v1.1.2.
+Baixe e abra [Instalar-EnerAtlas.exe](https://github.com/patrick9kk/eneratlas/releases/latest/download/Instalar-EnerAtlas.exe). Ele inclui seu próprio ambiente de execução; não exige Python ou Git. O instalador consulta a release mais recente para obter o aplicativo, preservando a pasta de dados registrada na instalação.
 
 Para baixar todo o código, use [Download ZIP](https://github.com/patrick9kk/eneratlas/archive/refs/heads/main.zip), extraia e abra `Instalar-EnerAtlas.cmd`. Com Git instalado, uma linha no **CMD** faz tudo:
 
@@ -58,6 +58,14 @@ O resultado fica em `dist/Instalar-EnerAtlas.exe`. O fluxo é testado em Windows
 Referências técnicas: [API de assets do GitHub](https://docs.github.com/en/rest/releases/assets) e [Invoke-WebRequest no PowerShell 5.1](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1).
 
 ## Instalar arquivos que você já possui
+
+Para vincular uma base já existente em outra pasta, mantendo os arquivos nesse local:
+
+```powershell
+./scripts/install_windows.ps1 -Executable .\dist\EnerAtlas.exe -ExistingData 'C:\Users\SEU_USUARIO\Documents\EnerAtlas\data' -UseExistingLocation
+```
+
+O manifesto e os atalhos passam a usar essa pasta. O instalador automático também respeita o caminho registrado em `INSTALACAO.json` em futuras atualizações; `-DataRoot` continua disponível para escolher outro destino explicitamente. Após mudar a localização, encerre todas as sessões e teste novamente pelo atalho, conferindo o número de camadas e registros.
 
 O aplicativo pode ser instalado sem administrador usando `scripts/install_windows.ps1`. O executável já deve ter sido extraído de uma release, e a pasta de dados deve conter `eneratlas.db`.
 

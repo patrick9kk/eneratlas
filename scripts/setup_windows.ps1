@@ -6,7 +6,7 @@ param(
     [switch]$CheckOnly,
     [switch]$NoShortcuts,
     [string]$InstallRoot = (Join-Path $env:LOCALAPPDATA 'Programs\EnerAtlas'),
-    [string]$DataRoot = (Join-Path $env:LOCALAPPDATA 'EnerAtlas\data'),
+    [string]$DataRoot = '',
     [string]$CacheRoot = (Join-Path $env:LOCALAPPDATA 'EnerAtlas\downloads')
 )
 $ErrorActionPreference = 'Stop'
@@ -95,6 +95,14 @@ function Get-AvailableBytes([string]$Path) {
 }
 
 function Install-EnerAtlas {
+    if (-not $DataRoot) {
+        $installation = Get-SafeChild $InstallRoot 'INSTALACAO.json'
+        if (Test-Path -LiteralPath $installation -PathType Leaf) {
+            $record = Get-Content -LiteralPath $installation -Raw | ConvertFrom-Json
+            if ($record.data -and [IO.Path]::IsPathRooted([string]$record.data)) { $DataRoot = [string]$record.data }
+        }
+        if (-not $DataRoot) { $DataRoot = Join-Path $env:LOCALAPPDATA 'EnerAtlas\data' }
+    }
     foreach ($path in @($InstallRoot,$DataRoot,$CacheRoot)) {
         if ([IO.Path]::GetFullPath($path).TrimEnd('\') -eq [IO.Path]::GetPathRoot([IO.Path]::GetFullPath($path)).TrimEnd('\')) { throw 'Nao instale na raiz de um volume.' }
     }

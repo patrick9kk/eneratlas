@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory=$true)][string]$Executable,
     [Parameter(Mandatory=$true)][string]$ExistingData,
     [string]$SourcesRoot,
-    [switch]$MoveData
+    [switch]$MoveData,
+    [switch]$UseExistingLocation
 )
 $ErrorActionPreference = 'Stop'
 $exeSource = (Resolve-Path -LiteralPath $Executable).Path
@@ -13,6 +14,12 @@ $localRoot = [Environment]::GetFolderPath('LocalApplicationData')
 $programRoot = [IO.Path]::GetFullPath((Join-Path $localRoot 'Programs\EnerAtlas'))
 $storageRoot = [IO.Path]::GetFullPath((Join-Path $localRoot 'EnerAtlas'))
 $dataTarget = [IO.Path]::GetFullPath((Join-Path $storageRoot 'data'))
+if ($UseExistingLocation) {
+    if ($MoveData) { throw 'Escolha UseExistingLocation ou MoveData.' }
+    $dataTarget = [IO.Path]::GetFullPath($dataSource)
+    $storageRoot = [IO.Path]::GetDirectoryName($dataTarget)
+    if (-not $storageRoot) { throw 'A base nao pode ficar na raiz do volume.' }
+}
 if (-not $dataTarget.StartsWith($storageRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
     throw 'Destino de dados fora da pasta de instalacao.'
 }
