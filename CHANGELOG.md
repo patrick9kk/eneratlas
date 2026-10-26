@@ -1,5 +1,11 @@
 # Histórico
 
+## 1.1.5 — 2026-10-26
+
+- Tutorial simples na abertura, com explicações de camadas, busca, mapa, satélite, fichas, tabela e cruzamentos.
+- Explicações específicas para a versão web e para os recursos locais da instalação.
+- Botão Tutorial para rever o guia e opção de não mostrar novamente neste navegador.
+
 ## Documentação — 2026-10-26
 
 - Tutorial de uso das versões web e instalada, com passos por função, exemplos de consulta, diferenças de cobertura e solução de problemas comuns.

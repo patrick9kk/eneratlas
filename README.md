@@ -10,6 +10,8 @@ Desenvolvido por **Patrick Maximo Cordeiro**.
 
 **Como usar?** Leia o [tutorial completo das versões web e instalada](docs/TUTORIAL.md): mapa, filtros, fichas, satélite, cores por tensão, cruzamentos, exportação, importação e atualização.
 
+Ao abrir o mapa, um **guia rápido** explica cada área da tela. Avance em **Próximo** ou feche para explorar. Você pode marcar **Não mostrar ao abrir novamente** e rever pelo botão **? Tutorial**, no topo.
+
 ### [🗺️ Abrir o mapa no navegador](https://patrick9kk.github.io/eneratlas/)
 
 Não precisa instalar nada para consultar a versão pública. Abra o link, marque as camadas e clique nos componentes para visualizar a ficha técnica.

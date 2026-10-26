@@ -2,7 +2,9 @@
 
 **Desenvolvido por Patrick Maximo Cordeiro.**
 
-Guia baseado nas funções da versão 1.1.4. Documentação revisada em 26/10/2026.
+Guia baseado nas funções da versão 1.1.5. Documentação revisada em 26/10/2026.
+
+Ao abrir o mapa, um tutorial curto explica as áreas da tela. Use **Próximo**, **Voltar** e **Começar a usar**. Para dispensá-lo nas próximas aberturas, marque **Não mostrar ao abrir novamente**. O botão **? Tutorial**, no topo, permite rever as explicações a qualquer momento. Essa preferência fica salva no navegador usado.
 
 O EnerAtlas permite explorar a infraestrutura energética brasileira, consultar fichas técnicas e relacionar dados da EPE, ANEEL, ONS e arquivos próprios. Este tutorial acompanha os nomes dos botões da interface.
 
