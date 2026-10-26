@@ -1,5 +1,10 @@
 # Histórico
 
+## Documentação — 2026-10-26
+
+- Tutorial de uso das versões web e instalada, com passos por função, exemplos de consulta, diferenças de cobertura e solução de problemas comuns.
+- Acesso ao tutorial no início do README.
+
 ## Instalador — 2026-10-22
 
 - Preserva o caminho da base registrado no manifesto ao atualizar, em vez de voltar ao destino padrão.
