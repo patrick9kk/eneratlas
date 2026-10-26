@@ -1,6 +1,7 @@
 # Tutorial do EnerAtlas — versão web e aplicativo instalado
 
-**Desenvolvido por Patrick Maximo Cordeiro.**  
+**Desenvolvido por Patrick Maximo Cordeiro.**
+
 Guia baseado nas funções da versão 1.1.4. Documentação revisada em 26/10/2026.
 
 O EnerAtlas permite explorar a infraestrutura energética brasileira, consultar fichas técnicas e relacionar dados da EPE, ANEEL, ONS e arquivos próprios. Este tutorial acompanha os nomes dos botões da interface.
